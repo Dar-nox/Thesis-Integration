@@ -455,7 +455,7 @@ MonoBehaviour:
   isHeated: 0
   attachedToTools: 
   containedItems: []
-  containedItemStates: 
+  containedItemStates: []
 --- !u!114 &258542534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859,8 +859,16 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8431849857581507796, guid: e460ef9db6f220a43bf2f3d38eff2895, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8998970991058075341}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2984188246035347060, guid: e460ef9db6f220a43bf2f3d38eff2895, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 703318399}
   m_SourcePrefab: {fileID: 100100000, guid: e460ef9db6f220a43bf2f3d38eff2895, type: 3}
+--- !u!1 &535472350 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2984188246035347060, guid: e460ef9db6f220a43bf2f3d38eff2895, type: 3}
+  m_PrefabInstance: {fileID: 535472349}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &544787767
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,7 +1238,7 @@ MonoBehaviour:
   isHeated: 0
   attachedToTools: 
   containedItems: []
-  containedItemStates: 
+  containedItemStates: []
 --- !u!1001 &690834650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1357,6 +1365,21 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8431849857581507796, guid: e460ef9db6f220a43bf2f3d38eff2895, type: 3}
   m_PrefabInstance: {fileID: 535472349}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &703318399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535472350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ceadc94be03b849aaa93010933e733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bindings: []
+  autoBindChildrenIfEmpty: 1
+  showDebugLogs: 1
 --- !u!1 &714074154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2301,7 +2324,7 @@ MonoBehaviour:
   isHeated: 0
   attachedToTools: 02000000
   containedItems: []
-  containedItemStates: 
+  containedItemStates: []
 --- !u!1001 &1457939434
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3283,7 +3306,7 @@ MonoBehaviour:
   isHeated: 0
   attachedToTools: 
   containedItems: []
-  containedItemStates: 
+  containedItemStates: []
 --- !u!114 &1946697151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3608,7 +3631,7 @@ MonoBehaviour:
   isHeated: 0
   attachedToTools: 
   containedItems: []
-  containedItemStates: 
+  containedItemStates: []
 --- !u!224 &2007788302 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8431849857581507796, guid: e460ef9db6f220a43bf2f3d38eff2895, type: 3}

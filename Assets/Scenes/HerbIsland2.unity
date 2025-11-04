@@ -15493,7 +15493,8 @@ MonoBehaviour:
   use24HourFormat: 0
   timeText: {fileID: 0}
   dayText: {fileID: 0}
-  nextSceneName: Herb_Island
+  nextSceneName: Workstation
+  forceWorkstationOnNewDay: 1
   dayEndDialogueNode: DayEndDialogue
   waitForDialogue: 1
   showDebugLogs: 1

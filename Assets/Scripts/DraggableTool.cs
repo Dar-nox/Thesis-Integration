@@ -107,6 +107,12 @@ public class DraggableTool : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (item.itemData != null)
         {
             toolState.AddItem(item.itemData, item.itemData.processingStates);
+			
+			// Decrement from global inventory if present (1 unit per successful drop)
+			if (InventorySystem.Instance != null && !string.IsNullOrEmpty(item.itemID))
+			{
+				InventorySystem.Instance.RemoveItem(item.itemID, 1);
+			}
             
             // Parent the item to this tool visually
             item.parentAfterDrag = transform;

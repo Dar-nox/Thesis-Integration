@@ -30,6 +30,8 @@ public class TimeSystem : MonoBehaviour
     [Header("Day System")]
     [Tooltip("Scene to load when day ends (empty = reload current scene)")]
     public string nextSceneName = "";
+    [Tooltip("If enabled, always send next day to Workstation scene")]
+    public bool forceWorkstationOnNewDay = false;
     
     [Header("Day End Dialogue")]
     [Tooltip("Yarn node name to play at day end (leave empty to skip dialogue)")]
@@ -248,22 +250,58 @@ public class TimeSystem : MonoBehaviour
         totalHarvestsToday = 0;
         hasTransitioned = false;
 
-        // Reload scene
-        if (string.IsNullOrEmpty(nextSceneName))
+        // Decide next scene: prefer explicit nextSceneName; otherwise per-scene rules; then clinic scenes; fallback to reload
+        string targetScene = nextSceneName;
+
+        if (forceWorkstationOnNewDay)
         {
-            // Reload current scene
-            Scene currentScene = SceneManager.GetActiveScene();
-            
-            if (showDebugLogs) Debug.Log($"🔄 [TimeSystem] Reloading scene: {currentScene.name}");
-            
-            SceneManager.LoadScene(currentScene.name);
+            targetScene = "Workstation";
+            if (showDebugLogs) Debug.Log("[TimeSystem] forceWorkstationOnNewDay is ON → targetScene=Workstation");
+        }
+
+        if (string.IsNullOrEmpty(targetScene))
+        {
+            // Per-scene rule: from any island scene -> Workstation
+            string current = SceneManager.GetActiveScene().name;
+            bool isIslandScene = current == "HerbIsland2" || current == "Herb_Island" || current == "HomeIsland" || current == "Home_Island";
+            if (showDebugLogs) Debug.Log($"[TimeSystem] CurrentScene='{current}', isIslandScene={isIslandScene}");
+            if (isIslandScene && Application.CanStreamedLevelBeLoaded("Workstation"))
+            {
+                targetScene = "Workstation";
+                if (showDebugLogs) Debug.Log("[TimeSystem] Island scene detected → targetScene=Workstation");
+            }
+        }
+
+        if (string.IsNullOrEmpty(targetScene))
+        {
+            // Try common clinic scene names if present in Build Settings (prefer Workstation phase)
+            if (Application.CanStreamedLevelBeLoaded("Workstation"))
+            {
+                targetScene = "Workstation";
+                if (showDebugLogs) Debug.Log("[TimeSystem] Fallback selection → targetScene=Workstation");
+            }
+            else if (Application.CanStreamedLevelBeLoaded("CounterView"))
+            {
+                targetScene = "CounterView";
+                if (showDebugLogs) Debug.Log("[TimeSystem] Fallback selection → targetScene=CounterView");
+            }
+        }
+
+        if (!string.IsNullOrEmpty(targetScene) && Application.CanStreamedLevelBeLoaded(targetScene))
+        {
+            if (showDebugLogs) Debug.Log($"🎬 [TimeSystem] Loading scene: {targetScene}");
+            SceneManager.LoadScene(targetScene);
         }
         else
         {
-            // Load specified scene
-            if (showDebugLogs) Debug.Log($"🎬 [TimeSystem] Loading scene: {nextSceneName}");
-            
-            SceneManager.LoadScene(nextSceneName);
+            // Fallback: reload current scene
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (showDebugLogs)
+            {
+                bool canLoadTarget = !string.IsNullOrEmpty(targetScene) && Application.CanStreamedLevelBeLoaded(targetScene);
+                Debug.Log($"⚠️ [TimeSystem] Could not load targetScene='{targetScene}' (canLoadTarget={canLoadTarget}). Reloading current scene: {currentScene.name}");
+            }
+            SceneManager.LoadScene(currentScene.name);
         }
     }
 
