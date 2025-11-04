@@ -9,6 +9,13 @@ using UnityEngine;
 public class WorkstationInventorySync : MonoBehaviour
 {
     [System.Serializable]
+    public class IdRemap
+    {
+        [Tooltip("Slot itemData.itemID or binding ID to match (e.g., 'Ginger_Raw')")] public string from;
+        [Tooltip("InventorySystem itemID to use instead (e.g., 'ginger')")] public string to;
+    }
+
+    [System.Serializable]
     public class SlotBinding
     {
         [Tooltip("Inventory itemID to read from InventorySystem (e.g., 'ginger')")] public string inventoryItemID;
@@ -26,9 +33,13 @@ public class WorkstationInventorySync : MonoBehaviour
 
     [Header("Behavior")]
     [Tooltip("If true, will never reduce a pre-placed slot's count; only increases when Inventory has more.")]
-    public bool onlyIncreaseCounts = true;
+    public bool onlyIncreaseCounts = false;
     [Tooltip("Default for auto-bound slots: hide the slot when quantity is zero.")]
     public bool defaultHideWhenZero = false;
+
+    [Header("ID Mapping")]
+    [Tooltip("Optional explicit remaps from slot IDs to inventory IDs (e.g., 'Ginger_Raw' → 'ginger')")]
+    public List<IdRemap> idRemaps = new List<IdRemap>();
 
     [Header("Debug")] public bool showDebugLogs = false;
 
@@ -100,9 +111,17 @@ public class WorkstationInventorySync : MonoBehaviour
             if (binding == null || binding.slot == null) continue;
 
             int qty = 0;
-            if (!string.IsNullOrEmpty(binding.inventoryItemID) && InventorySystem.Instance != null)
+            if (InventorySystem.Instance != null)
             {
-                qty = InventorySystem.Instance.GetItemQuantity(binding.inventoryItemID);
+                // Determine the key to use
+                string sourceKey = binding.inventoryItemID;
+                if (string.IsNullOrEmpty(sourceKey) && binding.slot.itemData != null)
+                {
+                    sourceKey = binding.slot.itemData.itemID;
+                }
+
+                string resolvedKey = ResolveInventoryKey(sourceKey);
+                qty = string.IsNullOrEmpty(resolvedKey) ? 0 : InventorySystem.Instance.GetItemQuantity(resolvedKey);
             }
 
             // Compute the new count honoring behavior flags
@@ -126,9 +145,79 @@ public class WorkstationInventorySync : MonoBehaviour
             if (showDebugLogs)
             {
                 string slotId = binding.slot.itemData != null ? binding.slot.itemData.itemID : "(null)";
-                Debug.Log($"[WorkstationSync] Set '{binding.inventoryItemID}' → slot '{slotId}' to {newCount} (inv={qty}, existing={existing})");
+                Debug.Log($"[WorkstationSync] Updated slot '{slotId}' to {newCount} (inv={qty}, existing={existing})");
             }
         }
+    }
+
+    string ResolveInventoryKey(string sourceKey)
+    {
+        if (string.IsNullOrEmpty(sourceKey)) return sourceKey;
+
+        // 1) Explicit remap wins
+        foreach (var map in idRemaps)
+        {
+            if (map == null) continue;
+            if (!string.IsNullOrEmpty(map.from) && string.Equals(map.from, sourceKey, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return map.to;
+            }
+        }
+
+        // 2) Try exact match as-is
+        if (InventorySystem.Instance != null && InventorySystem.Instance.HasItem(sourceKey))
+        {
+            return sourceKey;
+        }
+
+        // 3) Try normalized variants: lowercase, plural/singular, strip common suffixes like _Raw
+        string lower = sourceKey.ToLowerInvariant();
+        if (InventorySystem.Instance != null && InventorySystem.Instance.HasItem(lower))
+        {
+            return lower;
+        }
+
+        // Try add/remove trailing 's' on the lowercase key
+        if (InventorySystem.Instance != null)
+        {
+            if (lower.EndsWith("s"))
+            {
+                string singular = lower.Substring(0, lower.Length - 1);
+                if (InventorySystem.Instance.HasItem(singular)) return singular;
+            }
+            else
+            {
+                string plural = lower + "s";
+                if (InventorySystem.Instance.HasItem(plural)) return plural;
+            }
+        }
+
+        // Strip suffix after first underscore (e.g., Ginger_Raw → ginger)
+        int usIndex = sourceKey.IndexOf('_');
+        if (usIndex > 0)
+        {
+            string baseId = sourceKey.Substring(0, usIndex);
+            string baseLower = baseId.ToLowerInvariant();
+            if (InventorySystem.Instance != null)
+            {
+                if (InventorySystem.Instance.HasItem(baseId)) return baseId;
+                if (InventorySystem.Instance.HasItem(baseLower)) return baseLower;
+                // Try plural/singular on baseLower
+                if (baseLower.EndsWith("s"))
+                {
+                    string singular = baseLower.Substring(0, baseLower.Length - 1);
+                    if (InventorySystem.Instance.HasItem(singular)) return singular;
+                }
+                else
+                {
+                    string plural = baseLower + "s";
+                    if (InventorySystem.Instance.HasItem(plural)) return plural;
+                }
+            }
+        }
+
+        // No match found; return original to keep logs intelligible
+        return sourceKey;
     }
 }
 

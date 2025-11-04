@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\KC\\Desktop\\New folder (5)\\Thesis-Integration\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{DB1A24BF-7D73-3ACD-09D1-1559BFF25B04}|Assembly-CSharp.csproj|c:\\users\\kc\\desktop\\new folder (5)\\thesis-integration\\assets\\scripts\\ui\\workstationinventorysync.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DB1A24BF-7D73-3ACD-09D1-1559BFF25B04}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\workstationinventorysync.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{DB1A24BF-7D73-3ACD-09D1-1559BFF25B04}|Assembly-CSharp.csproj|c:\\users\\kc\\desktop\\new folder (5)\\thesis-integration\\assets\\scripts\\plantnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DB1A24BF-7D73-3ACD-09D1-1559BFF25B04}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\plantnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,6 +23,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "WorkstationInventorySync.cs",
+              "DocumentMoniker": "C:\\Users\\KC\\Desktop\\New folder (5)\\Thesis-Integration\\Assets\\Scripts\\UI\\WorkstationInventorySync.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\WorkstationInventorySync.cs",
+              "ToolTip": "C:\\Users\\KC\\Desktop\\New folder (5)\\Thesis-Integration\\Assets\\Scripts\\UI\\WorkstationInventorySync.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI\\WorkstationInventorySync.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAADwv3QAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-04T12:51:48.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "PlantNode.cs",
               "DocumentMoniker": "C:\\Users\\KC\\Desktop\\New folder (5)\\Thesis-Integration\\Assets\\Scripts\\PlantNode.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PlantNode.cs",
