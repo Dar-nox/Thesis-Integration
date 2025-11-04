@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8479df1b822fee458ec82ffe35d4fab, type: 3}
+  m_Name: Ginger_Peeled
+  m_EditorClassIdentifier: 
+  recipeName: Ginger_Peeled
+  inputItem: {fileID: 11400000, guid: 9e062d26b035a7a49837f331bd796ffb, type: 2}
+  requiredInputState: 0
+  requiredTool: 0
+  actionType: 0
+  prerequisites: []
+  outputItem: {fileID: 11400000, guid: 76a2d2d2ea5d20948b45ab6de3f26d50, type: 2}
+  outputState: 1
+  processingTime: 3
+  processDescription: 
